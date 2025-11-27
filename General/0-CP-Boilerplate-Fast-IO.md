@@ -495,51 +495,191 @@ sort(all(v), [](pii a, pii b) {
 });
 ```
 
-#### Binary Search Variants
+#### Sorting Vectors - Custom Comparators
+
+##### Sort Struct/Class
 ```cpp
-// Find first element >= x
-auto it = lower_bound(all(v), x);
+struct Person {
+    string name;
+    int age;
+    double height;
+};
 
-// Find first element > x
-auto it = upper_bound(all(v), x);
+vector<Person> people;
 
-// Count elements in range [l, r]
-int cnt = upper_bound(all(v), r) - lower_bound(all(v), l);
+// Lambda comparator - sort by age ascending
+sort(all(people), [](const Person& a, const Person& b) {
+    return a.age < b.age;
+});
 
-// Custom comparator
-auto it = lower_bound(all(v), x, [](int a, int b) {
-    return a < b;
+// Sort by age descending, then name ascending
+sort(all(people), [](const Person& a, const Person& b) {
+    if(a.age != b.age) return a.age > b.age;
+    return a.name < b.name;
+});
+
+// Function object comparator
+struct CompareByHeight {
+    bool operator()(const Person& a, const Person& b) const {
+        return a.height > b.height;
+    }
+};
+sort(all(people), CompareByHeight());
+```
+
+##### Sort Pairs/Tuples
+```cpp
+vector<pii> v;  // {first, second}
+
+// Sort by first element ascending
+sort(all(v));
+
+// Sort by first descending, then second ascending
+sort(all(v), [](pii a, pii b) {
+    if(a.first != b.first) return a.first > b.first;
+    return a.second < b.second;
+});
+
+// Sort by second element
+sort(all(v), [](pii a, pii b) {
+    return a.second < b.second;
+});
+
+// Tuples - sort by 2nd, then 3rd element
+vector<tuple<int, int, int>> t;
+sort(all(t), [](auto& a, auto& b) {
+    if(get<1>(a) != get<1>(b)) return get<1>(a) < get<1>(b);
+    return get<2>(a) < get<2>(b);
 });
 ```
 
-#### Two Pointers Template
+##### Sort by Absolute Value / Custom Logic
 ```cpp
-// Finding pairs with sum = target
-int l = 0, r = n - 1;
-while(l < r) {
-    int sum = arr[l] + arr[r];
-    if(sum == target) {
-        // found
-        l++; r--;
-    } else if(sum < target) {
-        l++;
-    } else {
-        r--;
-    }
-}
+vector<int> v = {-5, 3, -2, 8, -1};
 
-// Sliding window
-int l = 0, r = 0, sum = 0;
-while(r < n) {
-    sum += arr[r];
-    while(sum > target) {
-        sum -= arr[l];
-        l++;
-    }
-    // process window [l, r]
-    r++;
-}
+// Sort by absolute value
+sort(all(v), [](int a, int b) {
+    return abs(a) < abs(b);
+});
+
+// Sort even numbers first, then odd numbers
+sort(all(v), [](int a, int b) {
+    if((a % 2) != (b % 2)) return (a % 2) == 0;
+    return a < b;
+});
+
+// Sort by count/frequency (ascending)
+map<int, int> freq;
+for(int x : v) freq[x]++;
+sort(all(v), [&](int a, int b) {
+    return freq[a] < freq[b];
+});
 ```
+
+##### Sort Strings
+```cpp
+vector<string> strings;
+
+// Sort lexicographically (default)
+sort(all(strings));
+
+// Sort by length (ascending)
+sort(all(strings), [](const string& a, const string& b) {
+    return a.length() < b.length();
+});
+
+// Sort by length desc, then lexicographically asc
+sort(all(strings), [](const string& a, const string& b) {
+    if(a.length() != b.length()) return a.length() > b.length();
+    return a < b;
+});
+
+// Sort case-insensitive
+sort(all(strings), [](const string& a, const string& b) {
+    string la = a, lb = b;
+    transform(all(la), la.begin(), ::tolower);
+    transform(all(lb), lb.begin(), ::tolower);
+    return la < lb;
+});
+```
+
+##### Stable Sort
+```cpp
+// stable_sort preserves relative order of equal elements
+vector<pii> v = {{1,3}, {2,1}, {1,2}};
+
+// Stable sort by first element
+stable_sort(all(v), [](pii a, pii b) {
+    return a.first < b.first;
+});
+// Result: {1,3}, {1,2}, {2,1}  (second unchanged)
+```
+
+##### Partial/Nth Element Sort
+```cpp
+// Find kth smallest element (O(n) on average)
+vector<int> v = {3, 1, 4, 1, 5, 9};
+nth_element(all(v), 2);  // 3rd smallest at index 2
+// All elements before index 2 are < v[2]
+// All elements after index 2 are > v[2]
+
+// Partial sort - sort first k elements
+partial_sort(all(v), v.begin() + k);
+// First k elements sorted, rest undefined order
+```
+
+##### Custom Comparator with Different Functions
+```cpp
+// Using function pointer
+bool compare(const Person& a, const Person& b) {
+    return a.age < b.age;
+}
+sort(all(people), compare);
+
+// Using std::function
+function<bool(const Person&, const Person&)> cmp = 
+    [](const Person& a, const Person& b) {
+        return a.age < b.age;
+    };
+sort(all(people), cmp);
+
+// Comparator by distance from origin
+auto distFromOrigin = [](pii a, pii b) {
+    ll dist_a = 1LL*a.first*a.first + 1LL*a.second*a.second;
+    ll dist_b = 1LL*b.first*b.first + 1LL*b.second*b.second;
+    return dist_a < dist_b;
+};
+sort(all(v), distFromOrigin);
+```
+
+##### Sorting with Comparator Object (Functional)
+```cpp
+// Create reusable comparator class
+struct DescendingComparator {
+    bool operator()(int a, int b) const {
+        return a > b;
+    }
+};
+
+vector<int> v = {3, 1, 4, 1, 5};
+sort(all(v), DescendingComparator());
+
+// Comparator with state
+struct CompareWithThreshold {
+    int threshold;
+    CompareWithThreshold(int t) : threshold(t) {}
+    
+    bool operator()(int a, int b) const {
+        if((a >= threshold) != (b >= threshold))
+            return a >= threshold;
+        return a < b;
+    }
+};
+sort(all(v), CompareWithThreshold(3));
+```
+
+#### Time Complexity: O(n log n)
+#### Space Complexity: O(1) for in-place sort (O(n) for stable sort)
 
 ### Memory Limits
 

@@ -53,3 +53,39 @@ m.value_comp()          // returns value comparison object
 ### Time Complexity Summary
 - Access/Insert/Delete: O(log n)
 - Search: O(log n)
+
+### Map with Vector as Value
+```cpp
+#include <map>
+#include <vector>
+map<int, vector<int>> m;                // map with vector values
+
+// Insertion
+m[key].push_back(value)         // O(1) amortized - add to vector
+m.insert({key, {v1, v2, v3}})   // O(log n) - insert with initialized vector
+m[key] = {1, 2, 3}              // O(log n) - assign vector
+
+// Access
+m[key][0]                       // O(log n + 1) - access vector element
+m.at(key)[i]                    // O(log n + 1) - safe access
+m.at(key).size()                // O(log n) - vector size
+
+// Iteration
+for(auto& [key, vec] : m)       // iterate over map
+    for(int val : vec)          // iterate over each vector
+        // process val
+
+// Check existence
+if(m.find(key) != m.end())      // O(log n) - key exists
+    m[key].push_back(value)     // add to existing vector
+
+// Vector operations
+m[key].pop_back()               // O(1) - remove last element
+m[key].erase(m[key].begin() + i) // O(n) - erase at index
+m[key].clear()                  // O(n) - clear all elements
+m[key].back()                   // O(1) - last element
+m[key].front()                  // O(1) - first element
+
+// Erase vector from map
+m.erase(key)                    // O(log n) - removes entire vector
+```
