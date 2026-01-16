@@ -4,7 +4,9 @@
 0. [CP Boilerplate & Fast I/O](#cp-boilerplate--fast-io)
 1. [Vector](#vector)
 2. [Map](#map)
+2.5. [Unordered Map](#unordered-map)
 3. [Set](#set)
+3.5. [Unordered Set](#unordered-set)
 4. [Multimap](#multimap)
 5. [Multiset](#multiset)
 6. [List](#list)
@@ -720,6 +722,80 @@ m.value_comp()          // returns value comparison object
 
 ---
 
+## UNORDERED_MAP
+
+### Declaration & Initialization
+```cpp
+#include <unordered_map>
+unordered_map<int, string> m;                     // empty unordered map
+unordered_map<int, string> m = {{1,"a"}, {2,"b"}}; // initializer list
+```
+
+### Core Operations
+```cpp
+// Access
+m[key]                  // O(1) avg, O(n) worst - insert if not exists
+m.at(key)               // O(1) avg, O(n) worst - throws if not exists
+m.find(key)             // O(1) avg, O(n) worst - returns iterator or end()
+m.count(key)            // O(1) avg, O(n) worst - returns 0 or 1
+
+// Modification
+m[key] = value          // O(1) avg, O(n) worst - insert or update
+m.insert({key, val})    // O(1) avg, O(n) worst
+m.insert(make_pair(k,v))// O(1) avg, O(n) worst
+m.emplace(key, val)     // O(1) avg, O(n) worst - construct in place
+m.erase(key)            // O(1) avg, O(n) worst - by key
+m.erase(it)             // O(1) avg, O(n) worst - by iterator
+m.erase(it1, it2)       // O(k) - erase range
+m.clear()               // O(n) - remove all
+
+// Size
+m.size()                // number of elements
+m.empty()               // returns true if empty
+m.max_size()            // maximum possible size
+
+// Iteration (UNORDERED - no guaranteed order)
+for(auto& [key, val] : m)           // structured binding (C++17)
+for(auto it = m.begin(); it != m.end(); ++it)
+    // it->first (key), it->second (value)
+m.begin(), m.end()      // unordered iteration
+// m.rbegin(), m.rend()  // NOT AVAILABLE
+
+// Hash Function & Buckets
+m.bucket_count()        // number of buckets
+m.max_bucket_count()    // maximum possible buckets
+m.bucket_size(i)        // elements in bucket i
+m.bucket(key)           // bucket index for key
+m.load_factor()         // size / bucket_count
+m.max_load_factor()     // maximum load factor
+m.rehash(n)             // set minimum n buckets
+m.reserve(n)            // prepare for n elements
+
+// Other
+m.swap(m2)              // O(1) - swap contents
+m.hash_function()       // returns hash function
+m.key_eq()              // returns equality function
+```
+
+### Time Complexity Summary
+- Average: O(1) for Access/Insert/Delete/Search
+- Worst case: O(n) when hash collisions occur
+
+### MAP vs UNORDERED_MAP Comparison
+| Feature | map | unordered_map |
+|---------|-----|---------------|
+| **Time Complexity** | O(log n) | O(1) avg, O(n) worst |
+| **Internal Structure** | Red-Black Tree | Hash Table |
+| **Order** | Sorted by key | No guaranteed order |
+| **Range queries** | ✓ (lower_bound, upper_bound) | ✗ |
+| **Reverse iteration** | ✓ (rbegin, rend) | ✗ |
+| **Predictable perf** | ✓ | ✗ (collision worst case) |
+
+**When to use MAP**: Need sorted order, range queries, guaranteed O(log n), custom comparators
+**When to use UNORDERED_MAP**: Need fastest average lookup, order doesn't matter, very large datasets
+
+---
+
 ## SET
 
 ### Declaration & Initialization
@@ -767,6 +843,81 @@ s.merge(s2)             // O(n log n) - merge s2 into s
 
 ### Time Complexity Summary
 - Insert/Delete/Search: O(log n)
+
+---
+
+## UNORDERED_SET
+
+### Declaration & Initialization
+```cpp
+#include <unordered_set>
+unordered_set<int> s;                    // empty unordered set
+unordered_set<int> s = {1, 2, 3, 4};    // initializer list
+// unordered_set<int, greater<int>> s;  // NOT AVAILABLE - no custom comparator
+```
+
+### Core Operations
+```cpp
+// Modification
+s.insert(x)             // O(1) avg, O(n) worst - returns pair<iterator, bool>
+s.emplace(x)            // O(1) avg, O(n) worst - construct in place
+s.erase(x)              // O(1) avg, O(n) worst - by value
+s.erase(it)             // O(1) avg, O(n) worst - by iterator
+s.erase(it1, it2)       // O(k) - erase range
+s.clear()               // O(n) - remove all
+
+// Search
+s.find(x)               // O(1) avg, O(n) worst - returns iterator or end()
+s.count(x)              // O(1) avg, O(n) worst - returns 0 or 1
+s.contains(x)           // O(1) avg, O(n) worst - C++20, returns bool
+
+// Size
+s.size()                // number of elements
+s.empty()               // returns true if empty
+s.max_size()            // maximum possible size
+
+// Bounds & Range (NOT AVAILABLE)
+// s.lower_bound(x)     // ✗ NOT AVAILABLE
+// s.upper_bound(x)     // ✗ NOT AVAILABLE
+// s.equal_range(x)     // ✗ NOT AVAILABLE
+
+// Iteration (UNORDERED - no guaranteed order)
+for(int x : s)          // unordered iteration
+s.begin(), s.end()      // unordered iterators
+// s.rbegin(), s.rend() // NOT AVAILABLE - no reverse iterators
+
+// Hash Function & Buckets
+s.bucket_count()        // number of buckets
+s.max_bucket_count()    // maximum possible buckets
+s.bucket_size(i)        // elements in bucket i
+s.bucket(x)             // bucket index for element x
+s.load_factor()         // size / bucket_count
+s.max_load_factor()     // maximum load factor
+s.rehash(n)             // set minimum n buckets
+s.reserve(n)            // prepare for n elements
+
+// Other
+s.swap(s2)              // O(1) - swap contents
+s.hash_function()       // returns hash function
+s.key_eq()              // returns equality function
+```
+
+### Time Complexity Summary
+- Average: O(1) for Insert/Delete/Search
+- Worst case: O(n) when hash collisions occur
+
+### SET vs UNORDERED_SET Comparison
+| Feature | set | unordered_set |
+|---------|-----|---------------|
+| **Time Complexity** | O(log n) | O(1) avg, O(n) worst |
+| **Internal Structure** | Red-Black Tree | Hash Table |
+| **Order** | Sorted order | No guaranteed order |
+| **Range queries** | ✓ (lower_bound, upper_bound) | ✗ |
+| **Reverse iteration** | ✓ (rbegin, rend) | ✗ |
+| **Predictable perf** | ✓ Guaranteed O(log n) | ✗ Worst case O(n) |
+
+**When to use SET**: Need sorted/ordered elements, range queries, guaranteed O(log n), custom comparators
+**When to use UNORDERED_SET**: Need fastest average lookup, order doesn't matter, very large datasets, no range queries needed
 
 ---
 

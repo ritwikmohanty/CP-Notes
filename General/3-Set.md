@@ -45,3 +45,11 @@ s.merge(s2)             // O(n log n) - merge s2 into s
 
 ### Time Complexity Summary
 - Insert/Delete/Search: O(log n)
+
+//traversing all elememnts of set of pairs
+```cpp
+vector<pair<int, int>> sp = {{1, 2}, {3, 4}, {5, 6}};
+for (const auto& p : sp) {
+    cout << p.first << ", " << p.second << endl;
+}
+```         
