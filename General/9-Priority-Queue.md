@@ -1,5 +1,10 @@
 # PRIORITY QUEUE
 
+### Why & When to Use
+- Use a priority queue when you repeatedly need to remove the current minimum or maximum while values are added, as in Dijkstra's algorithm, event simulation, or top-k tasks.
+- It gives O(1) access to the top and O(log n) insertion/removal, but does not support efficient lookup, arbitrary deletion, or sorted iteration.
+- Use `set`/`multiset` when you also need to erase a chosen value or query neighbors; use a regular queue when processing order is FIFO.
+
 ### Declaration & Initialization
 ```cpp
 #include <queue>

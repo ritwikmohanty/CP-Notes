@@ -1,5 +1,10 @@
 # UNORDERED_MAP
 
+### Why & When to Use
+- Use it for frequency counting, memoization, and exact-key lookup when iteration order and range queries do not matter.
+- Prefer it to `map` for expected O(1) operations; choose `map` for sorted traversal, bounds queries, or reliably O(log n) behavior.
+- Reserve when the expected number of entries is known to reduce rehashing. For small integer keys in a dense range, a vector is usually simpler and faster.
+
 ### Declaration & Initialization
 ```cpp
 #include <unordered_map>

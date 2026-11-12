@@ -1,5 +1,10 @@
 # MULTIMAP
 
+### Why & When to Use
+- Use `multimap` when each key maps to multiple values and you need those key-value entries kept in key order, with online bounds/range queries.
+- Prefer `map<Key, vector<Value>>` when grouping values by key is the main task; it makes the grouping explicit and avoids repeating the key in each tree node.
+- Use `unordered_multimap` only when ordering/range queries are unnecessary and hash-based lookup is a better fit.
+
 ### Declaration & Initialization
 ```cpp
 #include <map>

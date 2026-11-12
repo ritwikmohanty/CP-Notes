@@ -1,5 +1,10 @@
 # UNORDERED_SET
 
+### Why & When to Use
+- Use it for fast expected membership checks and deduplication when element order does not matter.
+- Prefer it over `set` when no bounds/range queries are needed and average O(1) lookup is useful; choose `set` for sorted order and guaranteed O(log n) operations.
+- For a small bounded integer domain, a boolean/visited array is often faster and uses less overhead.
+
 ### Declaration & Initialization
 ```cpp
 #include <unordered_set>

@@ -1,5 +1,10 @@
 # DEQUE
 
+### Why & When to Use
+- Use a deque when you need O(1) access by index plus pushes/pops at both ends, such as a sliding window or 0-1 BFS.
+- Prefer `vector` for mostly back-appends and random access (usually simpler and more cache-friendly); use `queue` when FIFO-only operations are enough.
+- Middle insertion/erasure is still O(n), so a deque is not a general substitute for `list` when editing known iterator positions.
+
 ### Declaration & Initialization
 ```cpp
 #include <deque>

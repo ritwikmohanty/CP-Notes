@@ -1,5 +1,10 @@
 # STRING
 
+### Why & When to Use
+- Use `string` for mutable text: it owns its memory, tracks its length, and supports convenient concatenation and substring operations.
+- For a fixed alphabet and per-character counts, an array of frequencies can be simpler/faster; for many substring queries, use prefix data or string algorithms rather than repeatedly copying substrings.
+- Prefer `getline` when input may contain spaces; `cin >> s` reads only one whitespace-delimited token.
+
 ### Headers
 ```cpp
 #include <string>

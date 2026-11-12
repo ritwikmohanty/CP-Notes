@@ -1,5 +1,10 @@
 # SET
 
+### Why & When to Use
+- Use `set` to maintain unique values in sorted order while values are inserted or removed online.
+- It is especially useful for minimum/maximum, predecessor/successor, and range queries via bounds.
+- Choose it over `unordered_set` when ordering or predictable O(log n) operations matter; if you only need membership, hashing or a boolean array may be simpler/faster.
+
 ### Declaration & Initialization
 ```cpp
 #include <set>

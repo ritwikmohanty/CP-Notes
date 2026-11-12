@@ -21,3 +21,4 @@
 14. [Exception Handling](General/14-Exception-Handling.md)
 15. [Quick Tips for ICPC](General/15-Quick-Tips-for-ICPC.md)
 16. [String](General/16-String.md)
+17. [Common CP Data Structure Patterns](General/17-Common-CP-Structures.md)

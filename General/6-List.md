@@ -1,5 +1,10 @@
 # LIST
 
+### Why & When to Use
+- Use `list` only when you need frequent insertion/removal at positions for which you already hold iterators, or need operations such as `splice` to move nodes.
+- Prefer `vector` for almost all ordinary CP sequences: it supports indexing, uses less memory, and has better cache locality.
+- A `list` does not make finding a position fast; searching or advancing to the k-th item is still O(n).
+
 ### Declaration & Initialization
 ```cpp
 #include <list>

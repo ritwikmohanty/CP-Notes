@@ -1,5 +1,42 @@
 # MAP
 
+### Why & When to Use
+- Use `map` when keys must stay sorted, you need predecessor/successor or range queries (`lower_bound`/`upper_bound`), or you want predictable O(log n) operations.
+- Prefer it over `unordered_map` when order matters or inputs may cause hash-table slowdowns; use a vector plus sorting/compression if keys are known offline and performance is critical.
+- Use `unordered_map` when you only need exact-key lookup and average speed matters more than order.
+
+### Map from ID to a List of Values
+
+Use `map<int, vector<int>>` when each ID is associated with a group of values and IDs should be processed in sorted order. Use `unordered_map<int, vector<int>>` if order is irrelevant, or `vector<vector<int>>` when IDs are dense from `0` to `n-1`.
+
+```cpp
+map<int, vector<int>> values;
+values[10].push_back(3);
+values[10].push_back(8);
+values[20] = {4, 5};
+
+// Structured binding: id is the key, vals is its vector.
+for (const auto& [id, vals] : values) {
+    cout << "id " << id << ":";
+    for (int value : vals) cout << ' ' << value;
+    cout << '\n';
+}
+
+// If values may be modified, use auto& instead of const auto&.
+for (auto& [id, vals] : values) {
+    vals.push_back(0);
+}
+```
+
+For C++14 or earlier, iterate without structured bindings:
+
+```cpp
+for (const auto& entry : values) {
+    int id = entry.first;
+    const vector<int>& vals = entry.second;
+}
+```
+
 ### Declaration & Initialization
 ```cpp
 #include <map>

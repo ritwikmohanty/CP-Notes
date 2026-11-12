@@ -1,5 +1,10 @@
 # STACK
 
+### Why & When to Use
+- Use a LIFO stack for nested/recent-first work: DFS, iterative tree traversal, bracket matching, expression parsing, and monotonic-stack problems.
+- Prefer the `stack` adapter when only top/push/pop are needed; use a vector when you also need indexing or iteration.
+- Use a queue for FIFO processing instead.
+
 ### Declaration & Initialization
 ```cpp
 #include <stack>

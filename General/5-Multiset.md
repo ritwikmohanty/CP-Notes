@@ -1,5 +1,10 @@
 # MULTISET
 
+### Why & When to Use
+- Use `multiset` as a sorted bag: duplicates are retained, and you can find/remove one occurrence or query the next value with bounds.
+- Common CP uses include maintaining a changing collection while repeatedly taking the smallest/largest or finding the closest available value.
+- Prefer a heap when you only need to access/remove one extreme and do not need arbitrary search or deletion; use a frequency map when the value domain is small or counts are the only concern.
+
 ### Declaration & Initialization
 ```cpp
 #include <set>

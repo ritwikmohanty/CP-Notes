@@ -1,5 +1,10 @@
 # QUEUE
 
+### Why & When to Use
+- Use a FIFO queue when items must be processed in arrival order, especially for BFS and level-order traversal.
+- Prefer `deque` if you need to inspect/iterate/index the sequence or modify both ends; a queue adapter exposes only front/back and push/pop.
+- For repeated access to the best (minimum/maximum) item, use `priority_queue` instead.
+
 ### Declaration & Initialization
 ```cpp
 #include <queue>

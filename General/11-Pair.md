@@ -1,5 +1,10 @@
 # PAIR
 
+### Why & When to Use
+- Use `pair` to keep two related values together, especially coordinates, edges, or a value plus a tie-break key.
+- Its lexicographic ordering makes `pair` useful in sorting and ordered containers; for larger or meaningful records, prefer a named `struct` so fields are clear.
+- For a fixed two-field value, `pair` is a lightweight alternative to defining a custom type.
+
 ### Declaration & Initialization
 ```cpp
 #include <utility>
